@@ -1,5 +1,5 @@
 # @package _group_
-data_root_dir: /data/data
-out_root_dir: /data/experiments
-tb_dir: /data/tb_logs
-pretrained_models: /some_path
+data_root_dir: /content/lama_HL/datasets
+out_root_dir: /content/lama_HL/experiments
+tb_dir: /content/lama_HL/tb_logs
+pretrained_models: /content/lama_HL/

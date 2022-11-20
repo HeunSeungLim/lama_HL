@@ -20,7 +20,7 @@ losses:
   feature_matching:
     weight: 100
   resnet_pl:
-    weight: 30
+    weight: 0
     weights_path: ${env:TORCH_HOME}
 
 generator:
