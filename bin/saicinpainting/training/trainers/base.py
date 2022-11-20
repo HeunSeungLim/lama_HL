@@ -187,39 +187,39 @@ class BaseInpaintingTrainingModule(ptl.LightningModule):
 
         # standard validation
         val_evaluator_states = [s['val_evaluator_state'] for s in outputs if 'val_evaluator_state' in s]
-        val_evaluator_res = self.val_evaluator.evaluation_end(states=val_evaluator_states)
-        val_evaluator_res_df = pd.DataFrame(val_evaluator_res).stack(1).unstack(0)
-        val_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
-        LOGGER.info(f'Validation metrics after epoch #{self.current_epoch}, '
-                    f'total {self.global_step} iterations:\n{val_evaluator_res_df}')
-
-        for k, v in flatten_dict(val_evaluator_res).items():
-            self.log(f'val_{k}', v)
-
-        # standard visual test
-        test_evaluator_states = [s['test_evaluator_state'] for s in outputs
-                                 if 'test_evaluator_state' in s]
-        test_evaluator_res = self.test_evaluator.evaluation_end(states=test_evaluator_states)
-        test_evaluator_res_df = pd.DataFrame(test_evaluator_res).stack(1).unstack(0)
-        test_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
-        LOGGER.info(f'Test metrics after epoch #{self.current_epoch}, '
-                    f'total {self.global_step} iterations:\n{test_evaluator_res_df}')
-
-        for k, v in flatten_dict(test_evaluator_res).items():
-            self.log(f'test_{k}', v)
-
-        # extra validations
-        if self.extra_evaluators:
-            for cur_eval_title, cur_evaluator in self.extra_evaluators.items():
-                cur_state_key = f'extra_val_{cur_eval_title}_evaluator_state'
-                cur_states = [s[cur_state_key] for s in outputs if cur_state_key in s]
-                cur_evaluator_res = cur_evaluator.evaluation_end(states=cur_states)
-                cur_evaluator_res_df = pd.DataFrame(cur_evaluator_res).stack(1).unstack(0)
-                cur_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
-                LOGGER.info(f'Extra val {cur_eval_title} metrics after epoch #{self.current_epoch}, '
-                            f'total {self.global_step} iterations:\n{cur_evaluator_res_df}')
-                for k, v in flatten_dict(cur_evaluator_res).items():
-                    self.log(f'extra_val_{cur_eval_title}_{k}', v)
+        # val_evaluator_res = self.val_evaluator.evaluation_end(states=val_evaluator_states)
+        # val_evaluator_res_df = pd.DataFrame(val_evaluator_res).stack(1).unstack(0)
+        # val_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
+        # LOGGER.info(f'Validation metrics after epoch #{self.current_epoch}, '
+        #             f'total {self.global_step} iterations:\n{val_evaluator_res_df}')
+        #
+        # for k, v in flatten_dict(val_evaluator_res).items():
+        #     self.log(f'val_{k}', v)
+        #
+        # # standard visual test
+        # test_evaluator_states = [s['test_evaluator_state'] for s in outputs
+        #                          if 'test_evaluator_state' in s]
+        # test_evaluator_res = self.test_evaluator.evaluation_end(states=test_evaluator_states)
+        # test_evaluator_res_df = pd.DataFrame(test_evaluator_res).stack(1).unstack(0)
+        # test_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
+        # LOGGER.info(f'Test metrics after epoch #{self.current_epoch}, '
+        #             f'total {self.global_step} iterations:\n{test_evaluator_res_df}')
+        #
+        # for k, v in flatten_dict(test_evaluator_res).items():
+        #     self.log(f'test_{k}', v)
+        #
+        # # extra validations
+        # if self.extra_evaluators:
+        #     for cur_eval_title, cur_evaluator in self.extra_evaluators.items():
+        #         cur_state_key = f'extra_val_{cur_eval_title}_evaluator_state'
+        #         cur_states = [s[cur_state_key] for s in outputs if cur_state_key in s]
+        #         cur_evaluator_res = cur_evaluator.evaluation_end(states=cur_states)
+        #         cur_evaluator_res_df = pd.DataFrame(cur_evaluator_res).stack(1).unstack(0)
+        #         cur_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
+        #         LOGGER.info(f'Extra val {cur_eval_title} metrics after epoch #{self.current_epoch}, '
+        #                     f'total {self.global_step} iterations:\n{cur_evaluator_res_df}')
+        #         for k, v in flatten_dict(cur_evaluator_res).items():
+        #             self.log(f'extra_val_{cur_eval_title}_{k}', v)
 
     def _do_step(self, batch, batch_idx, mode='train', optimizer_idx=None, extra_val_key=None):
         if optimizer_idx == 0:  # step for generator
